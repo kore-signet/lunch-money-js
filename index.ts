@@ -128,10 +128,18 @@ export interface Tag {
 	name: string,
 }
 
-export interface TransactionsEndpointArguments {
+export interface GetAllTransactionsEndpointArguments {
 	start_date?: string,
 	end_date?: string,
 	tag_id?: number,
+	asset_id?: number,
+	category_id?: number,
+	plaid_account_id?: number,
+	is_group?: boolean,
+	status?: string,
+	pending?: boolean,
+	offset?: number,
+	limit?: number,
 	debit_as_negative?: boolean,
 }
 
@@ -202,8 +210,9 @@ export class LunchMoney {
 		return ( await this.get( '/v1/plaid_accounts' ) ).plaid_accounts;
 	}
 
-	async getTransactions( args?: TransactionsEndpointArguments ) : Promise<Transaction[]> {
-		return ( await this.get( '/v1/transactions', args ) ).transactions;
+	// -> [transactions, has_more]
+	async getTransactions( args?: GetAllTransactionsEndpointArguments ) : Promise<[Transaction[], boolean]> {
+		return ( await this.get( '/v1/transactions', args ).then((v) => [v.transactions, v.has_more]));
 	}
 
 	async getTransaction( id: number, args?: EndpointArguments ) : Promise<Transaction> {
