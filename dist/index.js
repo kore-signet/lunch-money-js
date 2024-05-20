@@ -91,9 +91,10 @@ class LunchMoney {
             return (yield this.get('/v1/plaid_accounts')).plaid_accounts;
         });
     }
+    // -> [transactions, has_more]
     getTransactions(args) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (yield this.get('/v1/transactions', args)).transactions;
+            return (yield this.get('/v1/transactions', args).then((v) => [v.transactions, v.has_more]));
         });
     }
     getTransaction(id, args) {

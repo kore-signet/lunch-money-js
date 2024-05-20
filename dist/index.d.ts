@@ -115,10 +115,18 @@ export interface Tag {
     id: number;
     name: string;
 }
-export interface TransactionsEndpointArguments {
+export interface GetAllTransactionsEndpointArguments {
     start_date?: string;
     end_date?: string;
     tag_id?: number;
+    asset_id?: number;
+    category_id?: number;
+    plaid_account_id?: number;
+    is_group?: boolean;
+    status?: string;
+    pending?: boolean;
+    offset?: number;
+    limit?: number;
     debit_as_negative?: boolean;
 }
 interface EndpointArguments {
@@ -137,7 +145,7 @@ export declare class LunchMoney {
     getAssets(): Promise<Asset[]>;
     updateAsset(endpointArgs: AssetUpdate): Promise<any>;
     getPlaidAccounts(): Promise<PlaidAccount[]>;
-    getTransactions(args?: TransactionsEndpointArguments): Promise<Transaction[]>;
+    getTransactions(args?: GetAllTransactionsEndpointArguments): Promise<[Transaction[], boolean]>;
     getTransaction(id: number, args?: EndpointArguments): Promise<Transaction>;
     updateTransaction(id: number, transaction: TransactionUpdate): Promise<TransactionUpdateResponse>;
     getCategories(): Promise<Category[]>;
